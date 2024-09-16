@@ -18,4 +18,10 @@ public class Cart {
     public List<Product> getProducts() {
         return products;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Cart
+                && email.equals(((Cart) obj).email);
+    }
 }
