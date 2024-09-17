@@ -50,7 +50,6 @@ public class StartByTestingThisTest {
         verify(productRepository, times(1)).findBySku(SKU);
     }
 
-
     @Test
     public void givenProduct_whenCreatingANewProduct_ThenProductIsAdded(){
         Product product = new Product(SKU,"A name", 2.2);
