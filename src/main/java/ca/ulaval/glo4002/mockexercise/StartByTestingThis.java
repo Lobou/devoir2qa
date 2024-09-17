@@ -19,7 +19,8 @@ public class StartByTestingThis {
         Cart cart = cartFactory.create(clientEmail);
 
         Product product = productRepository.findBySku(productSku);
-        // Étape 3 : Ajouter le produit au cart
+
+        cart.addProduct(product);
 
         // Étape 4 : Pour chaque item du cart, ajouter une ligne sur l'invoice
         // Étape 5 : Retourner l'invoice

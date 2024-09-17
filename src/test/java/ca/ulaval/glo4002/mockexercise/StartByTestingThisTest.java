@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo4002.mockexercise.do_not_edit.CartFactory;
+import ca.ulaval.glo4002.mockexercise.do_not_edit.Invoice;
+import ca.ulaval.glo4002.mockexercise.do_not_edit.InvoiceLine;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ public class StartByTestingThisTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private InvoiceLine invoiceLine;
 
     private final String EMAIL = "test@beaubrun.com";
 
@@ -60,6 +65,17 @@ public class StartByTestingThisTest {
         service.oneClickBuy(EMAIL, SKU);
 
         verify(cart, times(1)).addProduct(product);
+    }
 
+    // Étape 4 : Pour chaque item du cart, ajouter une ligne sur l'invoice
+    @Test
+    public void givenCart_whenAddingItem_ThenInvoiceLineIsAdded(){
+        Product product = new Product(SKU,"A name", 2.2);
+        Invoice invoice = new Invoice(SKU,"A name", 2.2);
+        InvoiceLine invoiceLine = new InvoiceLine(invoice);
+
+        when(cartFactory.create(EMAIL)).thenReturn(cart);
+        when(cart.getProducts()).thenReturn();
+        service.oneClickBuy(EMAIL, SKU);
     }
 }
