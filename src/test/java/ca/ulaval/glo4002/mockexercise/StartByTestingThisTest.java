@@ -22,6 +22,9 @@ public class StartByTestingThisTest {
     private CartFactory cartFactory;
 
     @Mock
+    private Cart cart;
+
+    @Mock
     private ProductRepository productRepository;
 
     private final String EMAIL = "test@beaubrun.com";
@@ -39,10 +42,23 @@ public class StartByTestingThisTest {
 
         verify(cartFactory, times(1)).create(EMAIL);
     }
+
     @Test
     public void givenASKU_whenOneClickBuy_ThenProductIsFound() {
         service.oneClickBuy(EMAIL, SKU);
 
         verify(productRepository, times(1)).findBySku(SKU);
+    }
+
+    @Test
+    public void givenProduct_whenCreatingANewProduct_ThenProductIsAdded(){
+        Product product = new Product(SKU,"A name", 2.2);
+
+        when(cartFactory.create(EMAIL)).thenReturn(cart);
+        when(productRepository.findBySku(SKU)).thenReturn(product);
+        service.oneClickBuy(EMAIL, SKU);
+
+        verify(cart, times(1)).addProduct(product);
+
     }
 }
