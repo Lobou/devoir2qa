@@ -9,15 +9,25 @@ import ca.ulaval.glo4002.mockexercise.do_not_edit.CartFactory;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.Invoice;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.InvoiceLine;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.ProductRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @ExtendWith(MockitoExtension.class)
 public class StartByTestingThisTest {
+
+    private final String EMAIL = "test@beaubrun.com";
+
+    private final String SKU = "12345";
+    private final String A_NAME = "Monsieur Soleil";
+    private final double A_PRICE = 2.2;
 
     private StartByTestingThis service;
     @Mock
@@ -32,13 +42,10 @@ public class StartByTestingThisTest {
     @Mock
     private InvoiceLine invoiceLine;
 
-    private final String EMAIL = "test@beaubrun.com";
-
-    private final String SKU = "12345";
-
     @BeforeEach
     public void setUp() {
         service = new StartByTestingThis(cartFactory, productRepository);
+        when(cartFactory.create(EMAIL)).thenReturn(cart);
     }
 
     @Test
@@ -58,9 +65,8 @@ public class StartByTestingThisTest {
 
     @Test
     public void givenProduct_whenCreatingANewProduct_ThenProductIsAdded(){
-        Product product = new Product(SKU,"A name", 2.2);
+        Product product = new Product(SKU,A_NAME, A_PRICE);
 
-        when(cartFactory.create(EMAIL)).thenReturn(cart);
         when(productRepository.findBySku(SKU)).thenReturn(product);
         service.oneClickBuy(EMAIL, SKU);
 
@@ -70,12 +76,15 @@ public class StartByTestingThisTest {
     // Étape 4 : Pour chaque item du cart, ajouter une ligne sur l'invoice
     @Test
     public void givenCart_whenAddingItem_ThenInvoiceLineIsAdded(){
-        Product product = new Product(SKU,"A name", 2.2);
-        Invoice invoice = new Invoice(SKU,"A name", 2.2);
-        InvoiceLine invoiceLine = new InvoiceLine(invoice);
+        Product product1 = new Product(SKU,A_NAME, A_PRICE);
+        Product product2 = new Product(SKU + "2",A_NAME, A_PRICE);
+        List<Product> productList = new ArrayList<>();
+        productList.add(product1);
+        productList.add(product2);
 
-        when(cartFactory.create(EMAIL)).thenReturn(cart);
-        when(cart.getProducts()).thenReturn();
+        when(cart.getProducts()).thenReturn(productList);
         service.oneClickBuy(EMAIL, SKU);
+
+        verify()
     }
 }
